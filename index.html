@@ -1,27 +1,298 @@
-<html>
-    <head>
-        <title>
-            judul tugas
-        </title>
-    </head>
-    <body>
-       <h1>Halo, saya Izdihar</h1> 
-       <p>
-        <hr>tugas foto nya</hr>
-        </p>
-        <p>
-            <img src="images/alpat.jfif" width = 450>
-        </p>
-        <h2> <hr><b>DATA DIRI</b></hr></h2>
-        <p>
-            Nama=Izdihar<br>
-            umur=16 thn<br>
-            hoby=golep<br>
-            tgl=05 november 2009<br>
-            <i>It's not about how much we've lost, it's about how much we have left.</i><br>
-            "edi<b>MANDI_DONG</b>"
-        </p>
-        <h3><hr>EDI MANDI</hr></h3>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MINE PORTOFOLIO</title>
+    <style>
+        /* --- NEO-BRUTALISM THEME CONFIG --- */
+        :root {
+            --bg: #f3f4f6;
+            --text: #000000;
+            --primary: #a855f7; /* Ungu */
+            --accent: #22c55e; /* Hijau */
+            --card-bg: #ffffff;
+            --border: #000000;
+        }
 
-    </body>
-</html>
+        [data-theme="dark"] {
+            --bg: #111827;
+            --text: #ffffff;
+            --primary: #ec4899; /* Pink */
+            --accent: #3b82f6; /* Biru */
+            --card-bg: #1f2937;
+            --border: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* --- UTILITY BUTTON / INTERACTIVE --- */
+        .neo-box {
+            background: var(--card-bg);
+            border: 4px solid var(--border);
+            box-shadow: 8px 8px 0px var(--border);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 0px;
+        }
+
+        .neo-btn {
+            background: var(--primary);
+            color: #000 !important;
+            border: 3px solid var(--border);
+            box-shadow: 4px 4px 0px var(--border);
+            padding: 10px 20px;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .neo-btn:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px var(--border);
+        }
+
+        /* --- HEADER & THEME TOGGLER --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .theme-toggle {
+            background: var(--accent);
+            font-size: 1.2rem;
+            padding: 10px;
+        }
+
+        /* --- HERO --- */
+        .hero {
+            text-align: center;
+            position: relative;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            background: var(--primary);
+            display: inline-block;
+            padding: 5px 15px;
+            border: 3px solid var(--border);
+            transform: rotate(-1deg);
+        }
+
+        /* --- SKILLS INTERACTIVE BAR --- */
+        .skill-row {
+            margin: 15px 0;
+        }
+        .skill-bar-bg {
+            background: var(--bg);
+            border: 3px solid var(--border);
+            height: 25px;
+            width: 100%;
+            position: relative;
+            margin-top: 5px;
+        }
+        .skill-bar-fill {
+            background: var(--accent);
+            height: 100%;
+            width: 0%; /* Diisi oleh JS */
+            transition: width 1.5s cubic-bezier(0.1, 1, 0.1, 1);
+        }
+
+        /* --- PROJECTS FILTER & CARDS --- */
+        .filter-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            background: var(--card-bg);
+            color: var(--text);
+        }
+        .filter-btn.active {
+            background: var(--accent);
+            color: #000;
+        }
+        
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .project-card {
+            cursor: pointer;
+        }
+        .project-card:active {
+            transform: translate(8px, 8px);
+            box-shadow: 0px 0px 0px var(--border);
+        }
+        .project-card.hidden {
+            display: none;
+        }
+        .tag {
+            display: inline-block;
+            background: var(--accent);
+            color: #000;
+            padding: 2px 8px;
+            font-size: 0.8rem;
+            border: 2px solid var(--border);
+            margin-top: 10px;
+        }
+
+        /* --- FOOTER / POPUP --- */
+        .popup {
+            position: fixed;
+            bottom: -100px;
+            right: 20px;
+            background: var(--accent);
+            color: #000;
+            border: 3px solid #000;
+            padding: 15px;
+            box-shadow: 5px 5px 0px #000;
+            transition: bottom 0.5s ease;
+            z-index: 1000;
+        }
+        .popup.show {
+            bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header & Interaksi Dark Mode -->
+        <header>
+            <div style="font-size: 1.5rem;">PORTFOLIO.AING</div>
+            <button class="neo-btn theme-toggle" id="themeBtn" onclick="toggleTheme()">☀️ / 🌙</button>
+        </header>
+
+        <!-- Bagian Utama / Hero -->
+        <div class="neo-box hero">
+            <h1>SAYA IZDIHAR</h1>
+            <p style="margin-top: 15px; font-size: 1.2rem;">PORTOFOLIO ASIX </p>
+            <div style="margin-top: 25px;">
+                <button class="neo-btn" onclick="triggerPencet()">PUSH ME!!!</button>
+            </div>
+        </div>
+
+        <!-- Bagian Keahlian (Bisa Mengisi Otomatis saat halaman dimuat) -->
+        <div class="neo-box">
+            <h2>📊 SKILLS LEVEL (INTERAKTIF)</h2>
+            
+            <div class="skill-row">
+                <p>HTML & CSS</p>
+                <div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="90%"></div></div>
+            </div>
+            <div class="skill-row">
+                <p>JAVASCRIPT</p>
+                <div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="75%"></div></div>
+            </div>
+            <div class="skill-row">
+                <p>DESAIN GRAFIS</p>
+                <div class="skill-bar-bg"><div class="skill-bar-fill" data-percent="85%"></div></div>
+            </div>
+        </div>
+
+        <!-- Bagian Proyek Pilihan dengan Filter Klik -->
+        <div class="neo-box">
+            <h2>📁 PROYEK SAYA (KLIK UNTUK FILTER)</h2>
+            
+            <div class="filter-container">
+                <button class="neo-btn filter-btn active" onclick="filterProjects('all', this)">SEMUA</button>
+                <button class="neo-btn filter-btn" onclick="filterProjects('web', this)">WEB</button>
+                <button class="neo-btn filter-btn" onclick="filterProjects('desain', this)">DESAIN</button>
+            </div>
+
+            <div class="project-grid">
+                <!-- Kartu Proyek 1 -->
+                <div class="neo-box project-card" data-category="web" onclick="alert('Anda membuka Proyek Web Kreatif!')">
+                    <h3>Proyek Web cyber</h3>
+                    <p>Situs web interaktif dengan gaya pop art yang asix.</p>
+                    <span class="tag">WEB</span>
+                </div>
+                <!-- Kartu Proyek 2 -->
+                <div class="neo-box project-card" data-category="desain" onclick="alert('Anda membuka Proyek Desain Poster!')">
+                    <h3>Poster Cyberpunk</h3>
+                    <p>Eksplorasi visual masa depan perkotaan fiksi.</p>
+                    <span class="tag">DESAIN</span>
+                </div>
+                <!-- Kartu Proyek 3 -->
+                <div class="neo-box project-card" data-category="web" onclick="alert('Anda membuka Aplikasi Game Web!')">
+                    <h3>Retro Mini Game</h3>
+                    <p>Game sederhana berbasis teks berbasis JavaScript.</p>
+                    <span class="tag">WEB</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bagian Kontak -->
+        <div class="neo-box" style="text-align: center;">
+            <h2>⚡ MARI BERKOLABORASI</h2>
+            <p style="margin: 15px 0;">Punya ide gila? Kirimkan pesan sekarang juga.</p>
+            <button class="neo-btn" onclick="showPopup()">Kirim Sinyal Email</button>
+        </div>
+    </div>
+
+    <!-- Toast Pop-up Interaktif -->
+    <div class="popup" id="contactPopup">
+        🚀 Sinyal Berhasil Dikirim ke: mhaqqinuurizdihar05@gmail.com!
+    </div>
+
+    <!-- LOGIKA INTERAKTIF (JAVASCRIPT) -->
+    <script>
+        // 1. Fungsi Switch Tema Gila (Dark/Light Mode)
+        function toggleTheme() {
+            const body = document.documentElement;
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+            }
+        }
+
+        // 2. Animasi Pengisian Bar Keahlian saat dibuka
+        window.addEventListener('DOMContentLoaded', () => {
+            const fills = document.querySelectorAll('.skill-bar-fill');
+            setTimeout(() => {
+                fills.forEach(bar => {
+                    bar.style.width = bar.getAttribute('data-percent');
+                });
+            }, 300);
+        });
+
+        // 3. Tombol Kejutan / Random Alert
+        function triggerPencet() {
+            const kalimat = [
+                "Aww! Jangan pencet keras-keras! 😂",
+                "Tombol ini tidak rusak, Anda yang terlalu bersemangat!",
+                "Terima kasih telah berinteraksi dengan portofolio saya! ✨",
+                "Error 404: Terlalu keren untuk diproses!"
+            ];
+            const acak = kalimat[Math.floor(Math.random() * kalimat.length)];
+            alert(acak);
+        }
+
+        // 4. Sistem Filter Kartu Proyek
+        function filterProjects(category, button) {
+            // Ubah status tombol aktif
